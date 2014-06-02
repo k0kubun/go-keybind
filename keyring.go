@@ -6,6 +6,7 @@ package keyring
 import (
 	"github.com/pkg/term/termios"
 	"syscall"
+	"unicode/utf8"
 )
 
 // Disable canonical mode, input echo and signal.
@@ -28,14 +29,24 @@ func Bind() chan rune {
 // This method is for use of goroutine.
 func keyringRoutine(receiver chan rune, orgTerm *syscall.Termios) {
 	defer setTerm(orgTerm)
-	buf := make([]byte, 1)
+	readBuf := make([]byte, 1)
+	runeBuf := []byte{}
 
-	for buf[0] != 'q' {
-		_, err := syscall.Read(syscall.Stdin, buf)
+	for {
+		_, err := syscall.Read(syscall.Stdin, readBuf)
 		if err != nil {
 			panic(err)
 		}
-		receiver <- rune(buf[0])
+
+		// Send char only when runeBuf is valid utf-8 byte sequence
+		runeBuf = append(runeBuf, readBuf[0])
+		if utf8.FullRune(runeBuf) {
+			ch, _ := utf8.DecodeRune(runeBuf)
+			receiver <- ch
+			runeBuf = []byte{}
+		} else if len(runeBuf) > utf8.UTFMax {
+			panic("unexpected utf-8 byte sequence")
+		}
 	}
 }
 

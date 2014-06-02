@@ -6,12 +6,15 @@ import (
 )
 
 func main() {
-	var ch rune
-
 	receiver := keyring.Bind()
 	println("Input some keys (hit 'q' to quit):")
-	for ch != 'q' {
-		ch = <-receiver
+
+	for {
+		ch := <-receiver
 		fmt.Printf("input = %c\n", ch)
+
+		if ch == 'q' {
+			break
+		}
 	}
 }
