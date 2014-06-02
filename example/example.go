@@ -11,7 +11,21 @@ func main() {
 
 	for {
 		ch := <-receiver
-		fmt.Printf("input = %c\n", ch)
+		print("input = ")
+		if keyring.IsPrintable(ch) {
+			fmt.Printf("%c\n", ch)
+		} else {
+			switch ch {
+			case keyring.ESCAPE:
+				fmt.Println("ESCAPE")
+			case keyring.DELETE:
+				fmt.Println("DELETE")
+			case keyring.TAB:
+				fmt.Println("TAB")
+			default:
+				fmt.Printf("Ctrl+%c\n", '@'+ch)
+			}
+		}
 
 		if ch == 'q' {
 			break
