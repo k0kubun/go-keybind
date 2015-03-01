@@ -12,12 +12,15 @@ $ go get github.com/k0kubun/go-keybind
 ## Usage
 
 ```go
-receiver := keybind.Bind()
-println("Input some keys (hit 'q' to quit):")
+bind := keybind.Open()
+defer bind.Close()
+
+fmt.Println("Input some keys (hit 'q' to quit):")
 
 for {
-	ch := <-receiver
-	print("input = ")
+	ch, _ := bind.ReadRune()
+	fmt.Print("input = ")
+
 	if keybind.IsPrintable(ch) {
 		fmt.Printf("%c\n", ch)
 	} else {

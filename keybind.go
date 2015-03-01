@@ -3,9 +3,11 @@
 package keybind
 
 import (
-	"github.com/pkg/term/termios"
+	"errors"
 	"syscall"
 	"unicode/utf8"
+
+	"github.com/pkg/term/termios"
 )
 
 const (
@@ -88,20 +90,48 @@ const (
 	controlCharactersMax = US
 )
 
-// Disable canonical mode, input echo and signal.
-// Then generate goroutine to receive all key input.
-func Bind() chan rune {
+type Term struct {
+	orgTerm *syscall.Termios
+}
+
+// To receive all input, disable canonical mode, input echo and signal.
+func Open() *Term {
 	// Get current terminal parameters
 	orgTerm := getCurrentTerm()
 
-	// Change terminal parameters
 	rawTerm := rawModeTerm(orgTerm)
 	setTerm(&rawTerm)
 
-	receiver := make(chan rune)
-	go keybindRoutine(receiver, &orgTerm)
+	return &Term{
+		orgTerm: &orgTerm,
+	}
+}
 
-	return receiver
+// Read one rune or control sequence.
+func (t *Term) ReadRune() (rune, error) {
+	readBuf := make([]byte, 1)
+	runeBuf := []byte{}
+
+	for {
+		_, err := syscall.Read(syscall.Stdin, readBuf)
+		if err != nil {
+			return NUL, err
+		}
+
+		// Send char only when runeBuf is valid utf-8 byte sequence
+		runeBuf = append(runeBuf, readBuf[0])
+		if utf8.FullRune(runeBuf) {
+			ch, _ := utf8.DecodeRune(runeBuf)
+			return ch, nil
+		} else if len(runeBuf) > utf8.UTFMax {
+			return NUL, errors.New("invalid byte sequence as utf-8")
+		}
+	}
+}
+
+// Reset terminal to canonical mode.
+func (t *Term) Close() {
+	setTerm(t.orgTerm)
 }
 
 // If given character is ASCII control characters, this function returns false.
@@ -112,31 +142,6 @@ func IsPrintable(ch rune) bool {
 		return false
 	}
 	return true
-}
-
-// Terminal input reader by syscall.Read().
-// This method is for use of goroutine.
-func keybindRoutine(receiver chan rune, orgTerm *syscall.Termios) {
-	defer setTerm(orgTerm)
-	readBuf := make([]byte, 1)
-	runeBuf := []byte{}
-
-	for {
-		_, err := syscall.Read(syscall.Stdin, readBuf)
-		if err != nil {
-			panic(err)
-		}
-
-		// Send char only when runeBuf is valid utf-8 byte sequence
-		runeBuf = append(runeBuf, readBuf[0])
-		if utf8.FullRune(runeBuf) {
-			ch, _ := utf8.DecodeRune(runeBuf)
-			receiver <- ch
-			runeBuf = []byte{}
-		} else if len(runeBuf) > utf8.UTFMax {
-			panic("unexpected utf-8 byte sequence")
-		}
-	}
 }
 
 func getCurrentTerm() syscall.Termios {
