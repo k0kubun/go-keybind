@@ -1,32 +1,32 @@
-# keyring
+# go-keybind
 
-Terminal key input receiver library for go application integrated with utf-8.  
+Terminal key input reader for go application integrated with utf-8.  
 You can handle all terminal input with this library.
 
 ## Installation
 
 ```bash
-$ go get github.com/k0kubun/keyring
+$ go get github.com/k0kubun/go-keybind
 ```
 
 ## Usage
 
 ```go
-receiver := keyring.Bind()
+receiver := keybind.Bind()
 println("Input some keys (hit 'q' to quit):")
 
 for {
 	ch := <-receiver
 	print("input = ")
-	if keyring.IsPrintable(ch) {
+	if keybind.IsPrintable(ch) {
 		fmt.Printf("%c\n", ch)
 	} else {
 		switch ch {
-		case keyring.ESCAPE:
+		case keybind.ESCAPE:
 			fmt.Println("ESCAPE")
-		case keyring.DELETE:
+		case keybind.DELETE:
 			fmt.Println("DELETE")
-		case keyring.TAB:
+		case keybind.TAB:
 			fmt.Println("TAB")
 		default:
 			fmt.Printf("Ctrl+%c\n", '@'+ch)
@@ -41,4 +41,4 @@ for {
 
 ## Documentation
 
-API documentation can be found here: https://godoc.org/github.com/k0kubun/keyring
+API documentation can be found here: https://godoc.org/github.com/k0kubun/go-keybind

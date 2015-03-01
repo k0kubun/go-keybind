@@ -1,6 +1,6 @@
 // Terminal key input receiver for go application.
-// keyring.Bind() returns channel which returns each key input.
-package keyring
+// keybind.Bind() returns channel which returns each key input.
+package keybind
 
 import (
 	"github.com/pkg/term/termios"
@@ -99,7 +99,7 @@ func Bind() chan rune {
 	setTerm(&rawTerm)
 
 	receiver := make(chan rune)
-	go keyringRoutine(receiver, &orgTerm)
+	go keybindRoutine(receiver, &orgTerm)
 
 	return receiver
 }
@@ -116,7 +116,7 @@ func IsPrintable(ch rune) bool {
 
 // Terminal input reader by syscall.Read().
 // This method is for use of goroutine.
-func keyringRoutine(receiver chan rune, orgTerm *syscall.Termios) {
+func keybindRoutine(receiver chan rune, orgTerm *syscall.Termios) {
 	defer setTerm(orgTerm)
 	readBuf := make([]byte, 1)
 	runeBuf := []byte{}
@@ -153,7 +153,7 @@ func setTerm(term *syscall.Termios) {
 	}
 }
 
-// returns non-canonical mode term for keyring
+// returns non-canonical mode term for keybind
 func rawModeTerm(term syscall.Termios) syscall.Termios {
 	term.Iflag &= syscall.IGNCR  // ignore received CR
 	term.Lflag ^= syscall.ICANON // disable canonical mode
