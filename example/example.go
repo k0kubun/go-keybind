@@ -22,11 +22,11 @@ func main() {
 			fmt.Printf("%c\n", ch)
 		} else {
 			switch ch {
-			case keybind.ESCAPE:
+			case keybind.Escape:
 				fmt.Println("ESCAPE")
-			case keybind.DELETE:
+			case keybind.Delete:
 				fmt.Println("DELETE")
-			case keybind.TAB:
+			case keybind.Tab:
 				fmt.Println("TAB")
 			default:
 				fmt.Printf("Ctrl+%c\n", '@'+ch)

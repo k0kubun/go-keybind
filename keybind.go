@@ -41,39 +41,39 @@ const (
 
 const (
 	// Major Key input for ASCII control characters
-	CTRL_Space = iota // or Ctrl+@
-	CTRL_A
-	CTRL_B
-	CTRL_C
-	CTRL_D
-	CTRL_E
-	CTRL_F
-	CTRL_G
-	BACKSPACE // or Ctrl+H
-	TAB       // or Ctrl+I
-	CTRL_J
-	CTRL_K
-	CTRL_L
-	CTRL_M
-	CTRL_N
-	CTRL_O
-	CTRL_P
-	CTRL_Q
-	CTRL_R
-	CTRL_S
-	CTRL_T
-	CTRL_U
-	CTRL_V
-	CTRL_W
-	CTRL_X
-	CTRL_Y
-	CTRL_Z
-	ESCAPE             // or Ctrl+[
-	Ctrl_BACKSLASH     // Ctrl+\
-	Ctrl_RIGHT_BRACKET // Ctrl+]
-	CTRL_HAT           // Ctrl+^
-	CTRL_UNDERSCORE    // Ctrl+_
-	DELETE             = 127
+	CtrlSpace = iota // or Ctrl+@
+	CtrlA
+	CtrlB
+	CtrlC
+	CtrlD
+	CtrlE
+	CtrlF
+	CtrlG
+	BackSpace // or Ctrl+H
+	Tab       // or Ctrl+I
+	CtrlJ
+	CtrlK
+	CtrlL
+	Return // or Ctrl+M
+	CtrlN
+	CtrlO
+	CtrlP
+	CtrlQ
+	CtrlR
+	CtrlS
+	CtrlT
+	CtrlU
+	CtrlV
+	CtrlW
+	CtrlX
+	CtrlY
+	CtrlZ
+	Escape           // or Ctrl+[
+	CtrlBackSlash    // Ctrl+\
+	CtrlRightBracket // Ctrl+]
+	CtrlHat          // Ctrl+^
+	CtrlUnderscore   // Ctrl+_
+	Delete           = 127
 )
 
 const (
