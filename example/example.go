@@ -12,7 +12,10 @@ func main() {
 	fmt.Println("Input some keys (hit 'q' to quit):")
 
 	for {
-		ch, _ := bind.ReadRune()
+		ch, err := bind.ReadRune()
+		if err != nil {
+			panic(err)
+		}
 		fmt.Print("input = ")
 
 		if keybind.IsPrintable(ch) {
@@ -31,6 +34,7 @@ func main() {
 		}
 
 		if ch == 'q' {
+			bind.Close()
 			break
 		}
 	}

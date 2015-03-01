@@ -1,6 +1,6 @@
 # go-keybind
 
-Terminal key input reader for go application integrated with utf-8.  
+Multi-platform terminal key input reader for go language integrated with utf-8.  
 You can handle all terminal input with this library.
 
 ## Installation
