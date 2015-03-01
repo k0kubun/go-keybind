@@ -1,7 +1,5 @@
-/*
-Terminal key input receiver for go application.
-keyring.Bind() returns channel which returns each key input.
-*/
+// Terminal key input receiver for go application.
+// keyring.Bind() returns channel which returns each key input.
 package keyring
 
 import (
