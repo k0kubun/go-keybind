@@ -37,6 +37,46 @@ for {
 }
 ```
 
+### Keys
+
+You can check what is the input with following `keybind.**`
+
+```go
+CtrlSpace = iota // or Ctrl+@
+CtrlA
+CtrlB
+CtrlC
+CtrlD
+CtrlE
+CtrlF
+CtrlG
+BackSpace // or Ctrl+H
+Tab       // or Ctrl+I
+CtrlJ
+CtrlK
+CtrlL
+Return // or Ctrl+M
+CtrlN
+CtrlO
+CtrlP
+CtrlQ
+CtrlR
+CtrlS
+CtrlT
+CtrlU
+CtrlV
+CtrlW
+CtrlX
+CtrlY
+CtrlZ
+Escape           // or Ctrl+[
+CtrlBackSlash    // Ctrl+\
+CtrlRightBracket // Ctrl+]
+CtrlHat          // Ctrl+^
+CtrlUnderscore   // Ctrl+_
+Delete
+```
+
 ## Documentation
 
 API documentation can be found here: https://godoc.org/github.com/k0kubun/go-keybind
